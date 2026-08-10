@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block base %}
+  <div class="bg-black text-white p-5">
+        <p class="text-3xl">Course Preview</p>
+        <div class="grid sm:grid-cols-2">
+            <div class="p-5 rounded-2xl">
+                <iframe width="100%" height="375" src="{{course.video}}" title="YouTube video player" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="p-5">
+                <p class="text-3xl">{{course.title}}:</p>
+                <p class="text-sm font-medium">Created At: {{course.added_at|date:"d M Y"}}</p>
+                <p class="text-sm font-medium text-right"><i class="fa-solid fa-signs-post"></i> {{course.instructor}}</p>
+                <p class="text-md font-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {{course.price}}</p>
+                <p class="text-sm font-medium">{{course.description}}</p>
+                <div class="flex flex-col gap-2 px-16 text-center">
+                    <a href="{% url 'addtocart' course.id %}" class="p-2 bg-blue-500 rounded-2xl w-full font-bold text-md mt-4"><i class="fa-solid fa-cart-arrow-down">&nbsp;</i>Add to cart</a>
+                    <a href="{% url 'addtowishlist' course.id %}" class="p-2 bg-red-500 rounded-2xl w-full font-bold text-md"><i class="fa-solid fa-heart">&nbsp;</i>Add to wishlist</a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center text-3xl">Modules & Lessons</p>
+        <div class="p-5">
+            {% for module in course.modules.all %}
+            <div id="accordion-collapse" data-accordion="collapse" class="rounded-base border border-default overflow-hidden shadow-xs">
+            <h2 id="accordion-collapse-heading-1">
+                <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-body rounded-t-base border border-t-0 border-x-0 border-b-default hover:text-heading hover:bg-neutral-secondary-medium gap-3" data-accordion-target="#accordion-collapse-body-{{module.id}}" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                <span>{{module.title}}</span>
+                <svg data-accordion-icon class="w-5 h-5 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 15 7-7 7 7"/></svg>
+                </button>
+            </h2>
+            {% for lesson in module.lessons.all %}
+            <div id="accordion-collapse-body-{{module.id}}" class="hidden border border-s-0 border-e-0 border-t-0 border-b-default" aria-labelledby="accordion-collapse-heading-1">
+                <div class="p-4 md:p-5">
+                    <p class="mb-2 text-body">{{lesson.title}}</p>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>  
+{% endblock base %}

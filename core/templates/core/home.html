@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block base %}
+    <div class="flex items-center justify-center bg-black text-white p-5">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div id="alert-3" class="fixed top-28 flex sm:items-center p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-amber-500 rounded-2xl" role="alert">
+                        <svg class="w-4 h-4 shrink-0 mt-0.5 md:mt-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                        <span class="sr-only">Info</span>
+                        <div class="ms-2 text-sm ">
+                            {{message}}
+                        </div>
+                        <button type="button" class="ms-auto -mx-1.5 -my-1.5 rounded focus:ring-2 focus:ring-success-medium p-1.5 hover:bg-success-medium inline-flex items-center justify-center h-8 w-8 shrink-0 shrink-0" data-dismiss-target="#alert-3" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                        </button>
+                    </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div id="alert-3" class="fixed top-28 flex sm:items-center p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-green-500 rounded-2xl" role="alert">
+                        <svg class="w-4 h-4 shrink-0 mt-0.5 md:mt-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                        <span class="sr-only">Info</span>
+                        <div class="ms-2 text-sm ">
+                            {{message}}
+                        </div>
+                        <button type="button" class="ms-auto -mx-1.5 -my-1.5 rounded focus:ring-2 focus:ring-success-medium p-1.5 hover:bg-success-medium inline-flex items-center justify-center h-8 w-8 shrink-0 shrink-0" data-dismiss-target="#alert-3" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="w-1/2 flex items-center justify-center">
+            <img src="{% static 'images/home.jpg' %}" alt="" class="w-auto h-100 rounded-2xl">
+        </div>
+        <div class="w-1/2 flex items-center justify-center flex-col gap-2">
+            <img src="{% static 'logo/logo.svg' %}" alt="" class="w-lg h-auto">
+            <p class="">CourseCloud is a modern online learning platform where students can discover high-quality courses taught by experienced instructors. From programming and web development to design, business, and data science, every course is carefully structured into modules and lessons for an engaging learning experience. Purchase courses securely, track your progress, and access your enrolled content anytime. Whether you're starting a new career, upgrading your skills, or sharing your expertise as an instructor, CourseCloud provides all the tools you need in one intuitive platform.
+                Learn smarter, teach confidently, and unlock endless opportunities through online education.</p>
+            <button class="p-2 w-full rounded-2xl bg-blue-500 shadow mt-4 ">Explore more</button>
+        </div>
+    </div>
+    <p class="bg-black text-white text-center font-bold text-3xl">Courses</p>
+    <div class="bg-black text-white">
+        <div id="cards" class="flex flex-wrap gap-8 justify-between items-center">
+        {% for course in courses %}
+        <div class="bg-black text-white max-w-sm p-6 border border-default rounded-2xl shadow-xs">
+            <a href="#">
+                <img class="rounded-base w-xl h-60" src="{{course.image.url}}" alt=""/>
+            </a>
+            <a href="#">
+                <h5 class="mt-6 mb-2 text-2xl font-semibold tracking-tight text-heading">{{course.title}}</h5>
+            </a>
+            <p class="mb-6 text-body">{{course.description|truncatewords:20}}</p>
+            {% if course.id in purchased_courses %}
+                <p class="bg-green-500 rounded-2xl p-2 text-center shadow mb-2 flex gap-2 items-center justify-center"><i class="fa-solid fa-lock"></i>Puchased</p>
+            {% else %}
+            <a href="{% url 'detail' course.id %}" class="inline-flex items-center text-body bg-neutral-secondary-medium box-border border border-default-medium focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                Read more
+                <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+            </a>
+            {% endif %}
+            
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock base %}

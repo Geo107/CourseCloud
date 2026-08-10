@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block base %}
+<div class="bg-black text-white p-5 min-h-screen">
+    <h1 class="text-5xl">Cart Summary:</h1>
+    <div class="grid sm:grid-cols-4 mt-4 gap-4">
+        {% if cart%}
+        <div class="col-span-3">
+            <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+                <table class="w-full text-sm text-left rtl:text-right text-body">
+                    <thead class="text-sm text-body bg-neutral-secondary-medium border-b border-default-medium">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Serial No
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Course
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Added at
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Image
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in cart %}
+                        <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
+                            <td class="p-4 text-center">
+                                {{forloop.counter}}
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-heading">
+                                {{i.course_object.title}} 
+                            </td>
+                            <td class="px-6 py-4">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>{{i.course_object.price}} 
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-heading">
+                                {{i.added_at|date:"d M Y"}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <img src="{{i.course_object.image.url}}" alt="" class="w-28 h-20">
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{% url 'remcart' i.id %}" class="flex gap-1 items-center justify-center p-2 rounded-2xl bg-red-500"><i class="fa-solid fa-trash"></i>Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-span-1">
+            
+            <div class="border-2  rounded-2xl p-5">
+                <p class="font-bold text-sm">Total Courses: {{count}}</p>
+                <p class="font-bold text-sm">Total Cost: <span><i class="fa-solid fa-indian-rupee-sign"></i>{{total}}</span></p>
+                <p class="text-sm">Amount should be less than 1 lakh</p>
+                <div class="flex flex-col justify-center items-center">
+                    <a href="{% url 'checkout' %}" class="px-16 p-2 bg-red-500 rounded-2xl shadow mb-2 mt-4">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <p class="text-center text-4xl font-bold w-full fixed top-28 p-48">No Course added to cart</p>
+    {% endif %}
+</div>
+{% endblock base %}

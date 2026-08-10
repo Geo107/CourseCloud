@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block base %}
+<div class="bg-black text-white p-5 min-h-screen">
+    <h1 class="text-5xl font-bold">Wishlist Summary:</h1>
+    <div class="grid sm:grid-cols-4 mt-4 gap-4">
+    {% if wishlist_courses %}
+    {% for course in wishlist_courses %}
+    <div class="w-full max-w-sm bg-neutral-primary-soft p-6 border border-default rounded-2xl shadow-xs">
+        
+        <a href="#">
+            <img class="rounded-2xl mb-1 w-2xl h-auto" src="{{course.course_object.image.url}}" alt="product image" />
+        </a>
+        <div>
+            <a href="{% url 'detail' course.course_object.id %}">
+                <h5 class="text-3xl">{{course.course_object.title}}</h5>
+            </a>
+            <div class="flex items-center justify-between mt-2">
+                <span class="text-3xl font-extrabold text-heading flex gap-0.5 items-center justify-center"><i class="fa-solid fa-indian-rupee-sign"></i>{{course.course_object.price}}</span>
+                <p class="text-sm font-bold"><i class="fa-solid fa-signs-post"></i>&nbsp;{{course.course_object.instructor}}</p>
+            </div>
+            <div class="text-center mt-2 flex items-center justify-between gap-1 mb-4">
+                <a href="{% url 'addtocart' course.course_object.id %}" class="p-2 rounded-2xl bg-blue-500 shadow w-1/2"><i class="fa-solid fa-cart-arrow-down">&nbsp;</i>Add to Cart</a>
+                <a href="{% url 'remwishlist' course.course_object.id  %}" class="p-2 rounded-2xl bg-red-500 shadow w-1/2"><i class="fa-solid fa-trash">&nbsp;</i>Delete</a>
+            </div>
+            <div class="flex flex-col text-center">
+                <a href="" class="p-2 rounded-2xl bg-green-500 shadow w-full "><i class="fa-brands fa-readme">&nbsp;</i>View More</a>
+            </div>
+        </div>
+        
+    </div> 
+    {% endfor %}
+    {% else %}
+        <p class="text-center text-4xl font-bold w-full fixed top-28 p-48">No Course added to wishlist</p>
+    {% endif %}
+</div>
+{% endblock base %}

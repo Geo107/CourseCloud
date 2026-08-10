@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "watch:css":"npx @tailwindcss/cli -i static/css/input.css -o static/css/output.css --watch",
+    "django":"python3 manage.py runserver 8082",
+    "dev":"concurrently \"npm run django\" \"npm run watch:css\"",
+    "build":"npx @tailwindcss/cli -i static/css/input.css -o static/css/output.css"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "concurrently": "^10.0.4",
+    "tailwindcss": "^4.3.3"
+  }
+}
